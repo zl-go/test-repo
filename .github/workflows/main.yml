@@ -2,7 +2,7 @@ name: contentful automic backup
 run-name: contentful automic backup
 on:
   schedule:
-  - cron: "50 0 * * 1"
+  - cron: "45 0 * * 1"
 jobs:
   build:
     runs-on: ubuntu-latest
