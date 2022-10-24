@@ -1,5 +1,5 @@
 name: contentful automic backup
-on: workflow_dispatch
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +10,6 @@ jobs:
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: create a variable date
-        run: date='date +%Y%m%d'
+        run: date=$(date "+%Y.%m.%d")
       - name: export contentful data
-        run: contentful space export --config contentful/export-config.json --content-file export${date}
+        run: contentful space export --config contentful/export-config.json --content-file export_${date}
