@@ -10,8 +10,8 @@ jobs:
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: create a variable date
-        run: myDate=$(date "+%Y.%m.%d")
+        run: myDate='date +%Y.%m.%d'
       - name: echo date
-        run: echo 'time is $myDate'
+        run: echo $myDate
       - name: export contentful data
         run: contentful space export --config contentful/export-config.json --content-file export_${myDate}
