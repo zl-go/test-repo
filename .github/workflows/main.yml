@@ -1,14 +1,15 @@
 name: contentful automic backup
-run-name: contentful automic backup
 on:
   schedule:
-  - cron: "45 0 * * 1"
+  - cron: "25 1 * * 1"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: export data
-        run: contentful space export --config export-config.json
+        run: contentful space export --config export-config.json --export-name export-data'data +%Y-%m-%d'
