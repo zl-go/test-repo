@@ -21,7 +21,5 @@ jobs:
           git commit -m "push the contenful backup file test" -a
 
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: git push -u origin master
           
