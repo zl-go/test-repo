@@ -9,5 +9,7 @@ jobs:
         uses: actions/setup-node@v3.5.1
       - name: install contentful cli
         run: npm install -g contentful-cli
-      - name: export data
-        run: contentful space export --config contentful/export-config.json --content-file export-data'date +%Y-%m-%d'
+      - name: create a variable export-date
+        run: export-date=`date +%Y%m%d`
+      - name: export contentful data
+        run: contentful space export --config contentful/export-config.json --content-file export${export-date}
