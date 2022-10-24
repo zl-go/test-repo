@@ -7,9 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
-      - name: print path
-        run: ls
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: export data
-        run: contentful space export --config contentful/export-config.json --content-file export-data'data +%Y-%m-%d'
+        run: contentful space export --config contentful/export-config.json --content-file export-data'date +%Y-%m-%d'
