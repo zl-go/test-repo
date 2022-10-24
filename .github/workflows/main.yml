@@ -10,6 +10,6 @@ jobs:
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: create a variable export-date
-        run: export-date=`date +%Y%m%d`
+        run: export-date='date +%Y%m%d'
       - name: export contentful data
         run: contentful space export --config contentful/export-config.json --content-file export${export-date}
