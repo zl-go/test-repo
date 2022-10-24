@@ -9,6 +9,10 @@ jobs:
         uses: actions/setup-node@v3.5.1
       - name: print path
         run: ls
+      - name: cd contentful
+        run: cd contentful
+      - name: ls 
+        run: ls
       - name: install contentful cli
         run: npm install -g contentful-cli
       - name: export data
