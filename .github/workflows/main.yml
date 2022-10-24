@@ -14,4 +14,4 @@ jobs:
           fee_date=`date +%Y-%m-%d`
           echo $fee_date
       - name: export contentful data
-        run: contentful space export --config contentful/export-config.json --content-file export_${fee_date}
+        run: contentful space export --config contentful/export-config.json --content-file 'export_${fee_date}'
