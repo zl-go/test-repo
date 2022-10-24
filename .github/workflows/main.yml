@@ -13,3 +13,15 @@ jobs:
         run: |
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json"
+      - name: commit
+        run: |
+          git config --global user.email 2983604867@qq.com
+          git config --global user.name zl-go
+          git add .
+          git commit -m "push the contenful backup file" -a
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          
