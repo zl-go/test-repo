@@ -18,7 +18,7 @@ jobs:
           git config --global user.email 2983604867@qq.com
           git config --global user.name zl-go
           git add .
-          git commit -m "push the contenful backup file" -a
+          git commit -m "push the contenful backup file test" -a
 
       - name: Push changes
         uses: ad-m/github-push-action@master
