@@ -11,7 +11,9 @@ jobs:
         run: npm install -g contentful-cli
       - name: create a variable date
         run: |
+
+      - name: export contentful data
+        run: |
           fee_date=`date +%Y-%m-%d`
           echo $fee_date
-      - name: export contentful data
-        run: contentful space export --config contentful/export-config.json --content-file "export_${fee_date}"
+          contentful space export --config contentful/export-config.json --content-file "export_${fee_date}.json"
