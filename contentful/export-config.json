@@ -4,7 +4,7 @@
   "managementToken": "CFPAT-_eO72Y2znuRxOX5_g262cIAV9pkw-b9aYTi5CgkicK4",
   "exportDir": "./",
   "saveFile": true,
-  "contentFile": "export-data",
+  "contentFile": "export.json",
   "includeDrafts": false,
   "includeArchived": false,
   "skipContentModel": false,
@@ -16,6 +16,6 @@
   "host": "api.contentful.com",
   "rawProxy": false,
   "maxAllowedLimit": 1000,
-  "errorLogFile": "./contenful/",
+  "errorLogFile": "./error.log",
   "useVerboseRenderer": false
 }
