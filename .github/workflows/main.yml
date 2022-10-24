@@ -1,7 +1,7 @@
 name: contentful automic backup
 on: 
   schedule:
-  - cron: "33 3 * * *"
+  - cron: "33,35,38,40,45 3 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest
