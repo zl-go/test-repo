@@ -10,7 +10,7 @@ jobs:
       - name: print path
         run: ls
       - name: cd contentful
-        run: cd contentful
+        run: cd ./contentful
       - name: ls 
         run: ls
       - name: install contentful cli
