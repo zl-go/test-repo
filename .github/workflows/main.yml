@@ -13,7 +13,7 @@ jobs:
         run: |
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json"
-      - name: commit
+      - name: commit data
         run: |
           git config --global user.email 2983604867@qq.com
           git config --global user.name zl-go
