@@ -34,8 +34,6 @@ jobs:
     env:
       receiver: 2983604867@qq.com
     steps:
-      - uses: actions/checkout@master
-      
       - name: test the file is pushed success or not
         run: |
           export_date=`date +%Y-%m-%d`
