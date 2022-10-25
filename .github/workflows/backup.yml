@@ -8,7 +8,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      export_date: ${{step.export-data.outputs.export_date}}
+      export_date: ${{step.export.outputs.export_date}}
     steps:
       - uses: actions/checkout@master
       
@@ -17,9 +17,8 @@ jobs:
         
       - name: install contentful-cli
         run: npm install -g contentful-cli
-        
-      - name: export contentful data
-      - id: export-data
+
+      - id: export
         run: |
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file contentful/error_${export_date}.json
@@ -49,7 +48,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://contentful/export_${{needs.export-job.outputs.export_date}}.json
+          body: file://contentful/export_${{needs.job1.outputs.export_date}}.json
           to: 2983604867@qq.com
           from: GitHub Actions
 
