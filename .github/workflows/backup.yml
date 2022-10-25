@@ -22,7 +22,7 @@ jobs:
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file ./contentful/error_${export_date}.json
           
-      - name: 'Send mail'
+      - name: Send mail
         uses: dawidd6/action-send-mail@master
         with:
           server_address: smtp.163.com
@@ -31,7 +31,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
           body: file://email.txt
-          to: shenkebug@qq.com
+          to: 2983604867@qq.com
           from: GitHub Actions
           content_type: text/plain
 
@@ -44,6 +44,5 @@ jobs:
           git commit -m "push the contenful backup file test" -a
 
       - name: Push changes
-        run: |
-          git push origin main
+        uses: ad-m/github-push-action@master
           
