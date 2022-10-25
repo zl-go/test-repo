@@ -24,6 +24,7 @@ jobs:
           [ -f contentful/export_${export_date}.json ] && echo yes || echo no
           [ -f contentful/error_${export_date}.json ] && echo yes || echo no
           [ -f contentful/error_${export_date}.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
+          echo ${{ env.isError }}
         
       - name: Send mail
         uses: dawidd6/action-send-mail@master
