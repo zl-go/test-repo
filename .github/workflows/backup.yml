@@ -42,7 +42,7 @@ jobs:
           [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
           [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
           echo "${{ env.hasErrorFile }}"
-		    echo "${{ env.hasExportFile }}"
+	  echo "${{ env.hasExportFile }}"
 
       - name: Send backup success mail
         uses: dawidd6/action-send-mail@master
