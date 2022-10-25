@@ -38,6 +38,8 @@ jobs:
           
       - name: commit data
         run: |
+          git config --global user.email "zhanglu-zl@foxmail.com"
+          git config --global user.name "zl-go"
           git add .
           git commit -m "push the contenful backup file test" -a
       - name: Push changes
