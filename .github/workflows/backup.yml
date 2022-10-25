@@ -1,8 +1,7 @@
 name: 
   contentful automic backup
 
-on: 
-  workflow_dispatch
+on: push
 
 jobs:
   build:
