@@ -1,7 +1,9 @@
 name: 
   contentful automic backup
 
-on: push
+on: 
+  schedule:
+  - cron: "0 3 * * 5"
 
 jobs:
   build:
@@ -20,13 +22,8 @@ jobs:
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file contentful/error_${export_date}.json
           echo "export_date=$export_date" >> $GITHUB_ENV
-          [ -f contentful/export_${export_date}.json ] && echo yes || echo no
-          [ -f contentful/error_${export_date}.json ] && echo yes || echo no
           [ -f contentful/error_${export_date}.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
-      
-      - name: test
-        run: echo ${{ env.isError }}
-        
+    
       - name: Send mail
         uses: dawidd6/action-send-mail@master
         if: contains(env.isError, 'yes')
