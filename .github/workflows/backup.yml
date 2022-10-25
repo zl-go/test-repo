@@ -5,7 +5,7 @@ on:
   workflow_dispatch
 
 jobs:
-  job1:
+  export-job:
     runs-on: ubuntu-latest
     outputs:
       export_date: ${{step.export-data.outputs.export_date}}
@@ -36,10 +36,10 @@ jobs:
         uses: ad-m/github-push-action@master
         
         
-  job2:
+  email-job:
     runs-on: ubuntu-latest
-    needs: job1
-    if: -f contentful/error_${{needs.job1.outputs.export_date}}.json
+    needs: export-job
+    if: -f contentful/error_${{needs.export-job.outputs.export_date}}.json
     steps:
       - name: Send error mail
         uses: dawidd6/action-send-mail@master
@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://contentful/export_${{needs.job1.outputs.export_date}}.json
+          body: file://contentful/export_${{needs.export-job.outputs.export_date}}.json
           to: 2983604867@qq.com
           from: GitHub Actions
 
