@@ -19,10 +19,12 @@ jobs:
       - name: export contentful data
         run: |
           export_date=`date +%Y-%m-%d_%H:%M:%S`
+          echo "export_date" >> $GITHUB_ENV
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file ./contentful/error_${export_date}.json
-          echo $export_date
+          
       - name: test
-        run: echo $export_date
+        run: echo ${{ env.export_date }}
+        
       - name: Send mail
         uses: dawidd6/action-send-mail@master
         with:
