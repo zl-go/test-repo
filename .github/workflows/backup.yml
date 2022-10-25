@@ -5,8 +5,10 @@ on:
   workflow_dispatch
 
 jobs:
-  export-data:
+  job1:
     runs-on: ubuntu-latest
+    outputs:
+      export_date: ${{step.export-data.outputs.export_date}}
     steps:
       - uses: actions/checkout@master
       
@@ -17,10 +19,11 @@ jobs:
         run: npm install -g contentful-cli
         
       - name: export contentful data
+      - id: export-data
         run: |
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file contentful/error_${export_date}.json
-          echo "export_date=$export_date" >> $GITHUB_ENV
+          echo "export_date=$export_date" >> $GITHUB_OUTPUT
 
       - name: commit data
         run: |
@@ -33,9 +36,10 @@ jobs:
         uses: ad-m/github-push-action@master
         
         
-  send-error-email:
+  job2:
     runs-on: ubuntu-latest
-    if: -f contentful/error_${{ env.export_date }}.json
+    needs: job1
+    if: -f contentful/error_${{needs.job1.outputs.export_date}}.json
     steps:
       - name: Send error mail
         uses: dawidd6/action-send-mail@master
@@ -45,7 +49,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://contentful/export_${{ env.export_date }}.json
+          body: file://contentful/export_${{needs.job1.outputs.export_date}}.json
           to: 2983604867@qq.com
           from: GitHub Actions
 
