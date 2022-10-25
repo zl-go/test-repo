@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://email.txt
+          body: file://contentful/export_${export_date}.json
           to: 2983604867@qq.com
           from: GitHub Actions
           content_type: text/plain
