@@ -24,7 +24,7 @@ jobs:
         
       - name: Send mail
         uses: dawidd6/action-send-mail@master
-        if: hashFiles(**/error_${{ env.export_date }}.json)
+        if: hashFiles(contentful/error_*.json)
         with:
           server_address: smtp.qq.com
           server_port: 465
