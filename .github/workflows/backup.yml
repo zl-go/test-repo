@@ -8,7 +8,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      export_date: ${{step.export.outputs.export_date}}
+      export_date: ${{steps.export.outputs.export_date}}
     steps:
       - uses: actions/checkout@master
       
