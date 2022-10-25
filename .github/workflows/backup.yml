@@ -28,14 +28,14 @@ jobs:
       # MAIL_PASSWORD: mail SMTP code
       - name: Send error inform mail
         uses: dawidd6/action-send-mail@master
-        if: contains(env.isError, 'yes')
+        if: contains(env.isError, 'no')
         with:
           server_address: smtp.qq.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://contentful/error_${{ env.export_date }}.json
+          body: file://contentful/export_${{ env.export_date }}.json
           to: 2983604867@qq.com
           from: GitHub Actions
 
