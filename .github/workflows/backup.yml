@@ -7,7 +7,7 @@ on:
   # - cron: "0 12 * * 5"
 
 jobs:
-  build:
+  export:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -20,7 +20,7 @@ jobs:
         
       - name: export contentful data
         run: |
-          export_date=`date +%Y-%m-%d`
+          export_date=`date +%Y-%m-%d-%H-%M-%S`
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json
   
@@ -31,12 +31,14 @@ jobs:
       
   send-email:
     runs-on: ubuntu-latest
+    needs: export
     env:
       receiver: 2983604867@qq.com
     steps:
+      - uses: actions/checkout@master
       - name: test the file is pushed success or not
         run: |
-          export_date=`date +%Y-%m-%d`
+          export_date=`date +%Y-%m-%d-%H-%M-%S`
           [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
           [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
 
