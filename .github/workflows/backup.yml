@@ -5,7 +5,7 @@ on:
   workflow_dispatch
 
 jobs:
-  build:
+  export-data:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -21,10 +21,24 @@ jobs:
           export_date=`date +%Y-%m-%d_%H:%M:%S`
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file contentful/error_${export_date}.json
           echo "export_date=$export_date" >> $GITHUB_ENV
+
+      - name: commit data
+        run: |
+          git config --global user.email 2983604867@qq.com
+          git config --global user.name zl-go
+          git add .
+          git commit -m "push the contenful backup file test" -a
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         
-      - name: Send mail
+        
+  send-error-email:
+    runs-on: ubuntu-latest
+    if: -f contentful/error_${{ env.export_date }}.json
+    steps:
+      - name: Send error mail
         uses: dawidd6/action-send-mail@master
-        if: -fff contentful/error_${{ env.export_date }}.json
         with:
           server_address: smtp.qq.com
           server_port: 465
@@ -35,14 +49,3 @@ jobs:
           to: 2983604867@qq.com
           from: GitHub Actions
 
-          
-      - name: commit data
-        run: |
-          git config --global user.email 2983604867@qq.com
-          git config --global user.name zl-go
-          git add .
-          git commit -m "push the contenful backup file test" -a
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-          
