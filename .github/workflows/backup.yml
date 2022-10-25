@@ -5,7 +5,7 @@ on:
   workflow_dispatch
 
 jobs:
-  export-job:
+  job1:
     runs-on: ubuntu-latest
     outputs:
       export_date: ${{step.export-data.outputs.export_date}}
@@ -36,10 +36,10 @@ jobs:
         uses: ad-m/github-push-action@master
         
         
-  email-job:
+  job2:
     runs-on: ubuntu-latest
-    needs: export-job
-    if: -f contentful/error_${{needs.export-job.outputs.export_date}}.json
+    needs: job1
+    if: -f contentful/error_${{needs.job1.outputs.export_date}}.json
     steps:
       - name: Send error mail
         uses: dawidd6/action-send-mail@master
