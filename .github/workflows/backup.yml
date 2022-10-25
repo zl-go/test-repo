@@ -24,6 +24,8 @@ jobs:
           echo "export_date=$export_date" >> $GITHUB_ENV
           [ -f contentful/error_${export_date}.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
     
+      # add Actions secrets:Settings->Secret->Actions->New repository secret
+      # MAIL_PASSWORD: mail SMTP code
       - name: Send error inform mail
         uses: dawidd6/action-send-mail@master
         if: contains(env.isError, 'yes')
@@ -33,8 +35,9 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Contentful backup error inform
-          body: file://contentful/export_${{ env.export_date }}.json
+          body: file://contentful/error_${{ env.export_date }}.json
           to: 2983604867@qq.com
+          from: GitHub Actions
 
           
       - name: commit data
@@ -46,3 +49,7 @@ jobs:
           
       - name: Push changes
         uses: ad-m/github-push-action@master
+      
+#       - uses: stefanzweifel/git-auto-commit-action@v4
+#         with:
+#           commit_message: "push the contenful backup file"
