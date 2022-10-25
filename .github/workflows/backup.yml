@@ -23,70 +23,66 @@ jobs:
           export_date=`date +%Y-%m-%d`
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json
-          echo "export_date=$export_date" >> $GITHUB_ENV
-          [ -f contentful/${export_date}/error.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
-      
+  
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "push the contenful backup file"
 
-      # add Actions secrets:Settings->Secret->Actions->New repository secret
-      # MAIL_PASSWORD: mail SMTP code
-      - name: Send error inform mail
-        uses: dawidd6/action-send-mail@master
-        if: contains(env.isError, 'yes')
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: Contentful backup error inform
-          body: there is some error when contentful data export
-          attachments: contentful/${{ env.export_date }}/error.json
-          to: 2983604867@qq.com
-          from: GitHub Actions
-          
+      
+  send-email:
+    runs-on: ubuntu-latest
+    env:
+      receiver: 2983604867@qq.com
+    steps:
+      - uses: actions/checkout@master
+      
+      - name: test the file is pushed success or not
+        run: |
+          export_date=`date +%Y-%m-%d`
+          [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
+          [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
+
       - name: Send backup success mail
         uses: dawidd6/action-send-mail@master
-        if: contains(env.isError, 'no')
+        if: env.hasExportFile=='yes' && env.hasErrorFile=='no'
         with:
           server_address: smtp.qq.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: Contentful backup error inform
-          body: there is some error when contentful data export
+          subject: "[SUCCESS]Contentful backup inform"
+          body: contentful timely backup has done,The file is attached.
           attachments: contentful/${{ env.export_date }}/export.json
-          to: 2983604867@qq.com
+          to: env.receiver
           from: GitHub Actions
-          
-          
-          
-#   test-push:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@master
-      
-#       - name: Setup Node.js environment
-#         run: |
-#           export_date=`date +%Y-%m-%d`
-#           [ -f contentful/${export_date}/export.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
-          
-#       # add Actions secrets:Settings->Secret->Actions->New repository secret
-#       # MAIL_PASSWORD: mail SMTP code
-#       - name: Send error inform mail
-#         uses: dawidd6/action-send-mail@master
-#         if: contains(env.isError, 'no')
-#         with:
-#           server_address: smtp.qq.com
-#           server_port: 465
-#           username: ${{ secrets.MAIL_USERNAME }}
-#           password: ${{ secrets.MAIL_PASSWORD }}
-#           subject: Contentful backup error inform
-#           body: file://contentful/${{ env.export_date }}/export.json
-#           to: 2983604867@qq.com
-#           from: GitHub Actions  
         
+      - name: Send push error inform mail
+        uses: dawidd6/action-send-mail@master
+        if: env.hasExportFile=='no' && env.hasErrorFile=='no'
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "[PUSH ERROR]Contentful backup inform"
+          body: when push the file to the repository,there are some errors happened.
+          to: env.receiver
+          from: GitHub Actions  
+
+      - name: Send backup error inform mail
+        uses: dawidd6/action-send-mail@master
+        if: env.hasErrorFile=='yes'
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "[BACUP ERROR]Contentful backup inform"
+          body: when excute the code of exporting contentful data ,there are some errors happened.
+          attachments: contentful/${{ env.export_date }}/error.json
+          to: env.receiver
+          from: GitHub Actions
+
         
         
         
