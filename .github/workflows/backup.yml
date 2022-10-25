@@ -1,7 +1,9 @@
-name: 
-  contentful automic backup
+name: contentful automic backup
 
-on: push
+on: 
+  workflow_dispatch
+  # schedule:
+  # - cron: "0 12 * * 5"
 
 jobs:
   build:
@@ -22,7 +24,7 @@ jobs:
           echo "export_date=$export_date" >> $GITHUB_ENV
           [ -f contentful/error_${export_date}.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
     
-      - name: Send mail
+      - name: Send error inform mail
         uses: dawidd6/action-send-mail@master
         if: contains(env.isError, 'yes')
         with:
@@ -42,5 +44,6 @@ jobs:
           git config --global user.name "zl-go"
           git add .
           git commit -m "push the contenful backup file test" -a
+          
       - name: Push changes
         uses: ad-m/github-push-action@master
