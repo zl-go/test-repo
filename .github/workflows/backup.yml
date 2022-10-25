@@ -35,7 +35,6 @@ jobs:
           subject: Contentful backup error inform
           body: file://contentful/export_${{ env.export_date }}.json
           to: 2983604867@qq.com
-          from: GitHub Actions
 
           
       - name: commit data
