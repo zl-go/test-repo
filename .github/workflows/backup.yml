@@ -21,6 +21,7 @@ jobs:
       - name: export contentful data
         run: |
           export_date=`date +%Y-%m-%d`
+          mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json
           echo "export_date=$export_date" >> $GITHUB_ENV
           [ -f contentful/${export_date}/error.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
