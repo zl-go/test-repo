@@ -1,8 +1,8 @@
 name: contentful automic backup
 
 on: 
-  push
-#   workflow_dispatch
+#   push
+   workflow_dispatch
   # schedule:
   # - cron: "0 12 * * 5"
 
@@ -43,6 +43,20 @@ jobs:
           subject: Contentful backup error inform
           body: there is some error when contentful data export
           attachments: contentful/${{ env.export_date }}/error.json
+          to: 2983604867@qq.com
+          from: GitHub Actions
+          
+      - name: Send backup success mail
+        uses: dawidd6/action-send-mail@master
+        if: contains(env.isError, 'no')
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Contentful backup error inform
+          body: there is some error when contentful data export
+          attachments: contentful/${{ env.export_date }}/export.json
           to: 2983604867@qq.com
           from: GitHub Actions
           
