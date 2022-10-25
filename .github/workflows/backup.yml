@@ -25,7 +25,6 @@ jobs:
         run: echo $export_date
       - name: Send mail
         uses: dawidd6/action-send-mail@master
-        if: ${{ -f export_${export_date} }}
         with:
           server_address: smtp.qq.com
           server_port: 465
