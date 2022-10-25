@@ -33,7 +33,6 @@ jobs:
           body: file://README.md
           to: 2983604867@qq.com
           from: GitHub Actions
-          content_type: text/plain
 
           
       - name: commit data
