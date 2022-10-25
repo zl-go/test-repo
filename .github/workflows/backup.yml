@@ -22,6 +22,7 @@ jobs:
           contentful space export --config contentful/export-config.json --content-file "export_${export_date}.json" --error-log-file contentful/error_${export_date}.json
           echo "export_date=$export_date" >> $GITHUB_ENV
           [ -f contentful/export_${export_date}.json ] && echo yes || echo no
+          [ -f contentful/error_${export_date}.json ] && echo yes || echo no
           [ -f contentful/error_${export_date}.json ] && echo "isError=yes" >> $GITHUB_ENV || echo "isError=no" >> $GITHUB_ENV
         
       - name: Send mail
