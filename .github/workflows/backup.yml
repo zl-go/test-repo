@@ -19,6 +19,35 @@ jobs:
     steps:
       - uses: actions/checkout@master
       
+      - name: setup node.js environment
+      - id: setup
+        uses: actions/setup-node@v3.5.1
+      
+      - name: install contentful cli
+      - id: install
+        run: npm install -g contentful-cli
+        
+      - name: export data        
+      - id: export
+        run: |
+          export_date=`date +%Y-%m-%d`
+          mkdir contentful/${export_date}
+          contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json --mt ${{ secrets.Contentful_Export_Token }}
+          
+      - name: push data             
+      - id: push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "push the contenful backup file"
+          
+      - name: output the result of the job to the send email job
+      - id: conclusion
+        run: |
+         echo "setup   =${steps.setup.conclusion}"  >> $GITHUB_OUTPUT
+         echo "install =${steps.installconclusion}" >> $GITHUB_OUTPUT
+         echo "export  =${steps.export.conclusion}" >> $GITHUB_OUTPUT
+         echo "push    =${steps.push.conclusion}"   >> $GITHUB_OUTPUT
+         [ -f contentful/${export_date}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
 
 
         
