@@ -1,7 +1,6 @@
 name: contentful automic backup
 
 on: 
-#   push
    workflow_dispatch
   # schedule:
   # - cron: "0 12 * * 5"
@@ -45,25 +44,25 @@ jobs:
         run: |
          echo ${{env.export}}
          if [ ${{env.setup}} == faliure  ];then 
-          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[FAIL]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=setup node.js environment failure" >> $GITHUB_ENV
           
          elif [ ${{env.install}} == faliure ];then 
-          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[FAIL]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=install contentful cli fail" >> $GITHUB_ENV
           
          elif [ ${{env.export}} == faliure ];then 
-          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[FAIL]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=export data fail" >> $GITHUB_ENV
 
           
          elif [ ${{env.push}} == faliure];then 
-          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[FAIL]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=push data fail" >> $GITHUB_ENV
 
           
          elif [ ${{env.backup}} == faliure ];then 
-          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[FAIL]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=contentful data backup fail,here is the log attached" >> $GITHUB_ENV
           echo "email_attachments=contentful/${env.export_date}/error.json" >> $GITHUB_ENV 
           
