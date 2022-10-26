@@ -1,7 +1,6 @@
 {
   "spaceId": "wbgvl9e8pqe2",
   "environmentId": "master",
-  "managementToken": "CFPAT-_eO72Y2znuRxOX5_g262cIAV9pkw-b9aYTi5CgkicK4",
   "exportDir": "./contentful/",
   "saveFile": true,
   "contentFile": "export.json",
