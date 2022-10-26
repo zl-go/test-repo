@@ -37,12 +37,15 @@ jobs:
           commit_message: "push the contenful backup file"
           
       - id: conclusion
+        if: ${{ always() }}
         run: |
+         echo ${{steps.setup.conclusion}}
          echo "setup   = ${{steps.setup.conclusion}}"  >> $GITHUB_OUTPUT
-         echo "install = ${{steps.installconclusion}}" >> $GITHUB_OUTPUT
+         echo "install = ${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
          echo "export  = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
          echo "push    = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
          [ -f contentful/${export_date}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
+         echo ${env.backup}
 
   send-email:
     if: ${{ always() }}
