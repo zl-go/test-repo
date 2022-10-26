@@ -38,10 +38,10 @@ jobs:
           
       - id: conclusion
         run: |
-         echo "setup   = steps.setup.conclusion"  >> $GITHUB_OUTPUT
-         echo "install = steps.installconclusion" >> $GITHUB_OUTPUT
-         echo "export  = steps.export.conclusion" >> $GITHUB_OUTPUT
-         echo "push    = steps.push.conclusion"   >> $GITHUB_OUTPUT
+         echo "setup   = ${steps.setup.conclusion}"  >> $GITHUB_OUTPUT
+         echo "install = ${steps.installconclusion}" >> $GITHUB_OUTPUT
+         echo "export  = ${steps.export.conclusion}" >> $GITHUB_OUTPUT
+         echo "push    = ${steps.push.conclusion}"   >> $GITHUB_OUTPUT
          [ -f contentful/${export_date}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
 
   send-email:
