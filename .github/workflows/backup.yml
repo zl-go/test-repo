@@ -55,7 +55,7 @@ jobs:
       - name: edit the email content out of the export job output
         run: |
          echo ${{needs.export.outputs.op_setup}}
-         if [ needs.export.outputs.op_setup == 'faliure'  ];then 
+         if [ ${{needs.export.outputs.op_setup}} == 'faliure'  ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=setup node.js environment Command execution error" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
