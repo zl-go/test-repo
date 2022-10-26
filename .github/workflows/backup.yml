@@ -34,14 +34,16 @@ jobs:
     needs: export
     steps:
       - uses: actions/checkout@master
+      
       - name: test the file is pushed success or not
         run: |
           export_date=`date +%Y-%m-%d`
           [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
           [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
+          ls
           cd contentful
           ls
-          echo '${export_date}'
+          echo ${export_date}
 
       - name: Send backup success mail
         uses: dawidd6/action-send-mail@master
