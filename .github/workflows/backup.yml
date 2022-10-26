@@ -32,8 +32,13 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     needs: export
+    if: ${{ always() }}
     steps:
       - uses: actions/checkout@master
+      
+      - name: asnyc
+        run: |
+         git pull --rebase origin master
       
       - name: test the file is pushed success or not
         run: |
@@ -43,7 +48,6 @@ jobs:
           ls
           cd contentful
           ls
-          echo ${export_date}
 
       - name: Send backup success mail
         uses: dawidd6/action-send-mail@master
