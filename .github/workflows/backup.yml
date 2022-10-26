@@ -57,7 +57,7 @@ jobs:
          export_date=`date +%Y-%m-%d`
          echo ${{needs.export.outputs.op_setup}}
          if [ ${{needs.export.outputs.op_setup}} == 'faliure'  ];then 
-          echo "subject= `[ERROR]Contentful backup inform`" >> $GITHUB_ENV
+          echo "email_subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=`setup node.js environment Command execution error`" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
           
@@ -82,7 +82,7 @@ jobs:
           echo "attachments = contentful/${export_date}/error.json" >> $GITHUB_ENV
           
          else
-          echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
+          echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "body=install contentful cli failure" >> $GITHUB_ENV
           echo "attachments = contentful/${export_date}/export.json" >> $GITHUB_ENV 
           
@@ -95,9 +95,9 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: env.subject
+          subject: ${env.subject}
           body: ${env.body}
-          attachments: ${env.attachmentss}
+          attachments: ${env.attachments}
           to: 2983604867@qq.com
           from: GitHub Actions
         
