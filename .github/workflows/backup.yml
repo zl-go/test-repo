@@ -44,7 +44,7 @@ jobs:
 
       - name: Send backup success mail
         uses: dawidd6/action-send-mail@master
-        if: contains(hasExportFile,'yes') && contains(hasErrorFile,'no')
+        if: contains(env.hasExportFile,'yes') && contains(env.hasErrorFile,'no')
         with:
           server_address: smtp.qq.com
           server_port: 465
@@ -58,7 +58,7 @@ jobs:
         
       - name: Send push error inform mail
         uses: dawidd6/action-send-mail@master
-        if: contains(hasExportFile,'no') && contains(hasErrorFile,'no')
+        if: contains(env.hasExportFile,'no') && contains(env.hasErrorFile,'no')
         with:
           server_address: smtp.qq.com
           server_port: 465
@@ -71,7 +71,7 @@ jobs:
 
       - name: Send backup error inform mail
         uses: dawidd6/action-send-mail@master
-        if: contains(hasErrorFile,'yes')
+        if: contains(env.hasErrorFile,'yes')
         with:
           server_address: smtp.qq.com
           server_port: 465
