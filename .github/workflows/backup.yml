@@ -52,31 +52,31 @@ jobs:
       
       - name: edit the email content out of the export job output
         run: |
-         if [ needs.export.outputs.op_setup ]
+         if [ ${{needs.export.outputs.op_setup}} == 'faliure'  ]
          then 
           echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
           echo "body='setup node.js environment Command execution error'" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ needs.export.outputs.op_install ]
+         elif [ ${{needs.export.outputs.op_install}} == 'faliure' ]
          then 
           echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
           echo "body='install contentful cli Command execution error'" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ needs.export.outputs.op_export ]
+         elif [ ${{needs.export.outputs.op_export}} == 'faliure' ]
          then 
           echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
           echo "body='Contentful Export Command execution error'" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ needs.export.outputs.op_push ]
+         elif [ ${{needs.export.outputs.op_push }} == 'faliure']
          then 
           echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
           echo "body='Push Data Command execution error'" >> $GITHUB_ENV        
           echo "attachments = ''" >> $GITHUB_ENV    
           
-         elif [ needs.export.outputs.op_error ]
+         elif [ ${{needs.export.outputs.op_backup}} == 'faliure' ]
          then 
           echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
           echo "body='install contentful cli failure'" >> $GITHUB_ENV
