@@ -94,11 +94,10 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: ${{ env.email_subject }}
-          body: ${{ env.email_body }}
-          attachments: ${{ env.email_attachments }}
           to: 2983604867@qq.com
           from: GitHub Actions
-        
+          body: ${{ env.email_body }}
+          attachments: ${{ env.email_attachments }}        
         
         
         
