@@ -38,8 +38,7 @@ jobs:
       
       - name: asnyc
         run: |
-         git fetch origin
-         git merge origin/master
+         git pull origin main --allow-unrelated-histories
       
       - name: test the file is pushed success or not
         run: |
