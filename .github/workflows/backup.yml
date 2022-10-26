@@ -34,10 +34,10 @@ jobs:
       - id: conclusion
         if: ${{ always() }}
         run: |
-         echo "setup=${{setup.conclusion}}" >> $GITHUB_ENV
-         echo "install=${{install.conclusion}}" >> $GITHUB_ENV
-         echo "export=${{export.conclusion}}" >> $GITHUB_ENV
-         echo "push=${{push.conclusion}}" >> $GITHUB_ENV
+         echo "setup=${{steps.setup.conclusion}}" >> $GITHUB_ENV
+         echo "install=${{steps.install.conclusion}}" >> $GITHUB_ENV
+         echo "export=${{steps.export.conclusion}}" >> $GITHUB_ENV
+         echo "push=${{steps.push.conclusion}}" >> $GITHUB_ENV
          [ -f contentful/${{env.export_date}}/error.json ]  && echo "backup=failure" >> $GITHUB_ENV || echo "backup=success" >> $GITHUB_ENV      
       
       - name: edit the email content out of the export job output
