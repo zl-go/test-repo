@@ -38,7 +38,8 @@ jobs:
       
       - name: asnyc
         run: |
-         git pull --rebase origin master
+         git fetch origin
+         git merge origin/master
       
       - name: test the file is pushed success or not
         run: |
