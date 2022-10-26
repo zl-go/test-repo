@@ -9,13 +9,7 @@ on:
 jobs:
   export:
     runs-on: ubuntu-latest
-    outputs:
-      op_setup: ${{ steps.conclusion.outputs.setup }}
-      op_install: ${{ steps.conclusion.outputs.install }}
-      op_export: ${{ steps.conclusion.outputs.export }}
-      op_push: ${{ steps.conclusion.outputs.push }}
-      op_backup: ${{ steps.conclusion.outputs.backup }}
-      
+    
     steps:
       - uses: actions/checkout@master
  
@@ -40,41 +34,35 @@ jobs:
       - id: conclusion
         if: ${{ always() }}
         run: |
-         echo "setup=${{steps.setup.conclusion}}" >> $GITHUB_OUTPUT
-         echo "install=${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
-         echo "export=${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
-         echo "push=${{steps.push.conclusion}}" >> $GITHUB_OUTPUT
-         [ -f contentful/${{env.export_date}}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
-
-  send-email:
-    if: ${{ always() }}
-    needs: export
-    runs-on: ubuntu-latest
-    steps:
+         echo "setup=${{setup.conclusion}}" >> $GITHUB_ENV
+         echo "install=${{install.conclusion}}" >> $GITHUB_ENV
+         echo "export=${{export.conclusion}}" >> $GITHUB_ENV
+         echo "push=${{push.conclusion}}" >> $GITHUB_ENV
+         [ -f contentful/${{env.export_date}}/error.json ]  && echo "backup=failure" >> $GITHUB_ENV || echo "backup=success" >> $GITHUB_ENV      
       
       - name: edit the email content out of the export job output
+        if: ${{ always() }}
         run: |
-         export_date=`date +%Y-%m-%d`
-         echo ${{needs.export.outputs.op_setup}}
+         echo ${{env.export}}
          if [ ${{needs.export.outputs.op_setup}} == faliure  ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=setup node.js environment failure" >> $GITHUB_ENV
           
-         elif [ ${{needs.export.outputs.op_install}} == faliure ];then 
+         elif [ ${{env.export}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=install contentful cli fail" >> $GITHUB_ENV
           
-         elif [ ${{needs.export.outputs.op_export}} == faliure ];then 
+         elif [ ${{env.export}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=export data fail" >> $GITHUB_ENV
 
           
-         elif [ ${{needs.export.outputs.op_push}} == faliure];then 
+         elif [ ${{env.export}} == faliure];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=push data fail" >> $GITHUB_ENV
 
           
-         elif [ ${{needs.export.outputs.op_backup}} == faliure ];then 
+         elif [ ${{env.export}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=contentful data backup fail,here is the log attached" >> $GITHUB_ENV
           echo "email_attachments = contentful/${export_date}/error.json" >> $GITHUB_ENV 
@@ -82,15 +70,13 @@ jobs:
          else
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=successfully backup the contentful data!here is the data attached" >> $GITHUB_ENV
-          echo "email_attachments = contentful/${export_date}/export.json" >> $GITHUB_ENV 
+          echo "email_attachments = contentful/${{env.export_date}}/export.json" >> $GITHUB_ENV 
           
          fi 
          
-         ls
-         cd contenful 
-         ls
         
       - name: Send inform mail
+        if: ${{ always() }}
         uses: dawidd6/action-send-mail@master
         with:
           server_address: smtp.qq.com
