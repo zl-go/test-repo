@@ -12,9 +12,9 @@ jobs:
     outputs:
       op_setup: ${{ steps.conclusion.outputs.setup }}
       op_install: ${{ steps.conclusion.outputs.install }}
-      op_export:  ${{ steps.conclusion.outputs.export }} 
-      op_push:    ${{ steps.conclusion.outputs.push }}
-      op_backup:  ${{ steps.conclusion.outputs.backup }}
+      op_export: ${{ steps.conclusion.outputs.export }}
+      op_push: ${{ steps.conclusion.outputs.push }}
+      op_backup: ${{ steps.conclusion.outputs.backup }}
       
     steps:
       - uses: actions/checkout@master
@@ -41,9 +41,9 @@ jobs:
         if: ${{ always() }}
         run: |
          echo "setup=${{steps.setup.conclusion}}" >> $GITHUB_OUTPUT
-         echo "install = ${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
-         echo "export = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
-         echo "push = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
+         echo "install=${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
+         echo "export=${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
+         echo "push=${{steps.push.conclusion}}" >> $GITHUB_OUTPUT
          [ -f contentful/${{env.export_date}}/error.json ]  && echo "backup = failure" >> $GITHUB_OUTPUT || echo "backup = success" >> $GITHUB_OUTPUT      
 
   send-email:
@@ -54,6 +54,7 @@ jobs:
       
       - name: edit the email content out of the export job output
         run: |
+         export_date=`date +%Y-%m-%d`
          echo ${{needs.export.outputs.op_setup}}
          if [ ${{needs.export.outputs.op_setup}} == 'faliure'  ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
@@ -70,7 +71,7 @@ jobs:
           echo "body=Contentful Export Command execution error" >> $GITHUB_ENV
           echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ ${{needs.export.outputs.op_push }} == 'faliure'];then 
+         elif [ ${{needs.export.outputs.op_push}} == 'faliure'];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=Push Data Command execution error" >> $GITHUB_ENV        
           echo "attachments = ''" >> $GITHUB_ENV    
@@ -78,12 +79,12 @@ jobs:
          elif [ ${{needs.export.outputs.op_backup}} == faliure ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=install contentful cli failure" >> $GITHUB_ENV
-          echo "attachments = contentful/${{ env.export_date }}/error.json" >> $GITHUB_ENV
+          echo "attachments = contentful/${export_date}/error.json" >> $GITHUB_ENV
           
          else
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=install contentful cli failure" >> $GITHUB_ENV
-          echo "attachments = contentful/${{ env.export_date }}/export.json" >> $GITHUB_ENV 
+          echo "attachments = contentful/${export_date}/export.json" >> $GITHUB_ENV 
           
          fi
         
