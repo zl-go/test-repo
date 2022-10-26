@@ -65,12 +65,12 @@ jobs:
          elif [ ${{env.export}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=contentful data backup fail,here is the log attached" >> $GITHUB_ENV
-          echo "email_attachments = contentful/${export_date}/error.json" >> $GITHUB_ENV 
+          echo "email_attachments=contentful/${export_date}/error.json" >> $GITHUB_ENV 
           
          else
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=successfully backup the contentful data!here is the data attached" >> $GITHUB_ENV
-          echo "email_attachments = contentful/${{env.export_date}}/export.json" >> $GITHUB_ENV 
+          echo "email_attachments=contentful/${{env.export_date}}/export.json" >> $GITHUB_ENV 
           
          fi 
          
