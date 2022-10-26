@@ -10,7 +10,7 @@ jobs:
   export:
     runs-on: ubuntu-latest
     outputs:
-      op_setup:   ${{ steps.conclusion.outputs.setup }}
+      op_setup: ${{ steps.conclusion.outputs.setup }}
       op_install: ${{ steps.conclusion.outputs.install }}
       op_export:  ${{ steps.conclusion.outputs.export }} 
       op_push:    ${{ steps.conclusion.outputs.push }}
@@ -40,7 +40,7 @@ jobs:
       - id: conclusion
         if: ${{ always() }}
         run: |
-         echo "setup = ${{steps.setup.conclusion}}"  >> $GITHUB_OUTPUT
+         echo "setup=${{steps.setup.conclusion}}" >> $GITHUB_OUTPUT
          echo "install = ${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
          echo "export = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
          echo "push = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
