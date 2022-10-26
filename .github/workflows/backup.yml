@@ -39,11 +39,11 @@ jobs:
       - id: conclusion
         if: ${{ always() }}
         run: |
-         echo "setup   = ${{steps.setup.conclusion}}"  >> $GITHUB_OUTPUT
+         echo "setup = ${{steps.setup.conclusion}}"  >> $GITHUB_OUTPUT
          echo "install = ${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
-         echo "export  = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
-         echo "push    = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
-         [ -f contentful/${export_date}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
+         echo "export = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
+         echo "push = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
+         [ -f contentful/${export_date}/error.json ]  && echo "backup = failure" >> $GITHUB_OUTPUT || echo "backup = success" >> $GITHUB_OUTPUT      
 
   send-email:
     if: ${{ always() }}
@@ -53,6 +53,7 @@ jobs:
       
       - name: edit the email content out of the export job output
         run: |
+         echo ${{needs.export.outputs.op_setup}}
          if [ needs.export.outputs.op_setup == 'faliure'  ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=setup node.js environment Command execution error" >> $GITHUB_ENV
