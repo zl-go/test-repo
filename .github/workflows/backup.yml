@@ -85,6 +85,9 @@ jobs:
           echo "email_attachments = contentful/${export_date}/export.json" >> $GITHUB_ENV 
           
          fi
+         
+         cd contenful 
+         ls
         
       - name: Send inform mail
         uses: dawidd6/action-send-mail@master
