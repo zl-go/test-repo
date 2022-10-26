@@ -20,7 +20,7 @@ jobs:
         
       - name: export contentful data
         run: |
-          export_date=`date +%Y-%m-%d-%H-%M-%S`
+          export_date=`date +%Y-%m-%d`
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json
   
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@master
       - name: test the file is pushed success or not
         run: |
-          export_date=`date +%Y-%m-%d-%H-%M-%S`
+          export_date=`date +%Y-%m-%d`
           [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
           [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
           echo "${{ env.hasExportFile }}"
