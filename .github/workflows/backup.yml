@@ -44,11 +44,11 @@ jobs:
         if: ${{ always() }}
         run: |
          echo ${{env.export}}
-         if [ ${{needs.export.outputs.op_setup}} == faliure  ];then 
+         if [ ${{env.setup}} == faliure  ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=setup node.js environment failure" >> $GITHUB_ENV
           
-         elif [ ${{env.export}} == faliure ];then 
+         elif [ ${{env.install}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=install contentful cli fail" >> $GITHUB_ENV
           
@@ -57,15 +57,15 @@ jobs:
           echo "email_body=export data fail" >> $GITHUB_ENV
 
           
-         elif [ ${{env.export}} == faliure];then 
+         elif [ ${{env.push}} == faliure];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=push data fail" >> $GITHUB_ENV
 
           
-         elif [ ${{env.export}} == faliure ];then 
+         elif [ ${{env.backup}} == faliure ];then 
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
           echo "email_body=contentful data backup fail,here is the log attached" >> $GITHUB_ENV
-          echo "email_attachments=contentful/${export_date}/error.json" >> $GITHUB_ENV 
+          echo "email_attachments=contentful/${env.export_date}/error.json" >> $GITHUB_ENV 
           
          else
           echo "email_subject=[SUCCESS]Contentful backup inform" >> $GITHUB_ENV
@@ -83,11 +83,11 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: ${{ env.email_subject }}
+          subject: ${{env.email_subject}}
           to: 2983604867@qq.com
           from: GitHub Actions
-          body: ${{ env.email_body }}
-          attachments: ${{ env.email_attachments }}        
+          body: ${{env.email_body}}
+          attachments: ${{env.email_attachments}}        
         
         
         
