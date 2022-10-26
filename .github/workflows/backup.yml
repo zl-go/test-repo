@@ -56,25 +56,21 @@ jobs:
         run: |
          export_date=`date +%Y-%m-%d`
          echo ${{needs.export.outputs.op_setup}}
-         if [ ${{needs.export.outputs.op_setup}} == 'faliure'  ];then 
-          echo "email_subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
+         if [ ${{needs.export.outputs.op_setup}} == faliure  ];then 
+          echo "email_subject="[ERROR]Contentful backup inform"" >> $GITHUB_ENV
           echo "body=`setup node.js environment Command execution error`" >> $GITHUB_ENV
-          echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ ${{needs.export.outputs.op_install}} == 'faliure' ];then 
+         elif [ ${{needs.export.outputs.op_install}} == faliure ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=install contentful cli Command execution error" >> $GITHUB_ENV
-          echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ ${{needs.export.outputs.op_export}} == 'faliure' ];then 
+         elif [ ${{needs.export.outputs.op_export}} == faliure ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=Contentful Export Command execution error" >> $GITHUB_ENV
-          echo "attachments = ''" >> $GITHUB_ENV 
           
-         elif [ ${{needs.export.outputs.op_push}} == 'faliure'];then 
+         elif [ ${{needs.export.outputs.op_push}} == faliure];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
           echo "body=Push Data Command execution error" >> $GITHUB_ENV        
-          echo "attachments = ''" >> $GITHUB_ENV    
           
          elif [ ${{needs.export.outputs.op_backup}} == faliure ];then 
           echo "subject=[ERROR]Contentful backup inform" >> $GITHUB_ENV
