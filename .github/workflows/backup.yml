@@ -28,6 +28,7 @@ jobs:
       - id: export
         run: |
           export_date=`date +%Y-%m-%d`
+          echo "export_date=${export_date}" >> GITHUB_ENV
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json --mt ${{ secrets.Contentful_Export_Token }}
                      
@@ -43,7 +44,7 @@ jobs:
          echo "install = ${{steps.install.conclusion}}" >> $GITHUB_OUTPUT
          echo "export = ${{steps.export.conclusion}}" >> $GITHUB_OUTPUT
          echo "push = ${{steps.push.conclusion}}"   >> $GITHUB_OUTPUT
-         [ -f contentful/${export_date}/error.json ]  && echo "backup = failure" >> $GITHUB_OUTPUT || echo "backup = success" >> $GITHUB_OUTPUT      
+         [ -f contentful/${{env.export_date}}/error.json ]  && echo "backup = failure" >> $GITHUB_OUTPUT || echo "backup = success" >> $GITHUB_OUTPUT      
 
   send-email:
     if: ${{ always() }}
