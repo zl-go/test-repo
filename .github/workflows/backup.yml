@@ -22,7 +22,7 @@ jobs:
         run: |
           export_date=`date +%Y-%m-%d`
           mkdir contentful/${export_date}
-          contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json
+          contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json --mt ${{ secrets.Contentful_Export_Token }}
   
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
