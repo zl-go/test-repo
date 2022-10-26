@@ -27,15 +27,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "push the contenful backup file"
-
-      
-  send-email:
-    runs-on: ubuntu-latest
-    needs: export
-    if: ${{ always() }}
-    steps:
-      - uses: actions/checkout@master
-      
+ 
       - name: asnyc
         run: |
          git pull origin main --allow-unrelated-histories
