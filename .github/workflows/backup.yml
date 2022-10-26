@@ -36,9 +36,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       
-      - name: asnyc
-        run: |
-         git pull origin main --allow-unrelated-histories
+#       - name: asnyc
+#         run: |
+#          git pull origin main --allow-unrelated-histories
       
       - name: test the file is pushed success or not
         run: |
