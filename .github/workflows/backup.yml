@@ -8,74 +8,106 @@ on:
 
 jobs:
   export:
+  
     runs-on: ubuntu-latest
+    
+    outputs:
+      op_setup:   ${{ steps.conclusion.outputs.setup }}
+      op_install: ${{ steps.conclusion.outputs.install }}
+      op_export:  ${{ steps.conclusion.outputs.export }} 
+      op_push:    ${{ steps.conclusion.outputs.push }}
+      op_backup:    ${{ steps.conclusion.outputs.backup }}
+      
     steps:
       - uses: actions/checkout@master
       
-      - name: Setup Node.js environment
+      - name: setup node.js environment
+      - id: setup
         uses: actions/setup-node@v3.5.1
-        
-      - name: install contentful-cli
+      
+      - name: install contentful cli
+      - id: install
         run: npm install -g contentful-cli
         
-      - name: export contentful data
+      - name: export data        
+      - id: export
         run: |
           export_date=`date +%Y-%m-%d`
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json --mt ${{ secrets.Contentful_Export_Token }}
-  
-      - uses: stefanzweifel/git-auto-commit-action@v4
+          
+      - name: push data             
+      - id: push
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "push the contenful backup file"
- 
-      - name: asnyc
+          
+      - name: output the result of the job to the send email job
+      - id: conclusion
         run: |
-         git pull origin main --allow-unrelated-histories
+         echo "setup   =${steps.setup.conclusion}"  >> $GITHUB_OUTPUT
+         echo "install =${steps.installconclusion}" >> $GITHUB_OUTPUT
+         echo "export  =${steps.export.conclusion}" >> $GITHUB_OUTPUT
+         echo "push    =${steps.push.conclusion}"   >> $GITHUB_OUTPUT
+         [ -f contentful/${export_date}/error.json ]  && echo "backup=failure" >> $GITHUB_OUTPUT || echo "backup=success" >> $GITHUB_OUTPUT      
+
+
+  send-email:
+    if: ${{ always() }}
+    needs: export
+    runs-on: ubuntu-latest
+    steps:
       
-      - name: test the file is pushed success or not
+      - name: edit the email content out of the export job output
         run: |
-          export_date=`date +%Y-%m-%d`
-          [ -f contentful/${export_date}/error.json ] && echo "hasErrorFile=yes" >> $GITHUB_ENV || echo "hasErrorFile=no" >> $GITHUB_ENV
-          [ -f contentful/${export_date}/export.json ] && echo "hasExportFile=yes" >> $GITHUB_ENV || echo "hasExportFile=no" >> $GITHUB_ENV
-
-      - name: Send backup success mail
-        uses: dawidd6/action-send-mail@master
-        if: contains(env.hasExportFile,'yes') && contains(env.hasErrorFile,'no')
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "[SUCCESS]Contentful backup inform"
-          body: contentful timely backup has done,The file is attached.
-          attachments: contentful/${{ env.export_date }}/export.json
-          to: 2983604867@qq.com
-          from: GitHub Actions
+         if [ ${{ needs.export.outputs.op_setup }} ]
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='setup node.js environment Command execution error'" >> $GITHUB_ENV
+          echo "attachments = ''" >> $GITHUB_ENV 
+          
+         elif [ ${{ needs.export.outputs.op_install }} ]
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='install contentful cli Command execution error'" >> $GITHUB_ENV
+          echo "attachments = ''" >> $GITHUB_ENV 
+          
+         elif [ ${{ needs.export.outputs.op_export }} ]
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='Contentful Export Command execution error'" >> $GITHUB_ENV
+          echo "attachments = ''" >> $GITHUB_ENV 
+          
+         elif [ ${{ needs.export.outputs.op_push }} ]
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='Push Data Command execution error'" >> $GITHUB_ENV        
+          echo "attachments = ''" >> $GITHUB_ENV    
+          
+         elif [ ${{ needs.export.outputs.op_error }} ]
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='install contentful cli failure'" >> $GITHUB_ENV
+          echo "attachments = contentful/${{ env.export_date }}/error.json" >> $GITHUB_ENV
+          
+         else
+         then 
+          echo "subject='[ERROR]Contentful backup inform'" >> $GITHUB_ENV
+          echo "body='install contentful cli failure '" >> $GITHUB_ENV
+          echo "attachments = contentful/${{ env.export_date }}/export.json" >> $GITHUB_ENV 
+          
+         fi
         
-      - name: Send push error inform mail
+      - name: Send inform mail
         uses: dawidd6/action-send-mail@master
-        if: contains(env.hasExportFile,'no') && contains(env.hasErrorFile,'no')
         with:
           server_address: smtp.qq.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "[PUSH ERROR]Contentful backup inform"
-          body: when push the file to the repository,there are some errors happened.
-          to: 2983604867@qq.com
-          from: GitHub Actions  
-
-      - name: Send backup error inform mail
-        uses: dawidd6/action-send-mail@master
-        if: contains(env.hasErrorFile,'yes')
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "[BACUP ERROR]Contentful backup inform"
-          body: when excute the code of exporting contentful data ,there are some errors happened.
-          attachments: contentful/${{ env.export_date }}/error.json
+          subject: ${env.subject}
+          body: ${env.body}
+          attachments: ${env.attachmentss}
           to: 2983604867@qq.com
           from: GitHub Actions
 
