@@ -28,10 +28,10 @@ jobs:
       - id: export
         run: |
           export_date=`date +%Y-%m-%d`
-          echo "export_date=${{export_date}}" >> GITHUB_ENV
+          echo "export_date=${export_date}" >> $GITHUB_ENV
           mkdir contentful/${export_date}
           contentful space export --config contentful/export-config.json --export-dir contentful/${export_date}/ --error-log-file contentful/${export_date}/error.json --mt ${{ secrets.Contentful_Export_Token }}
-                     
+                       
       - id: push
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
