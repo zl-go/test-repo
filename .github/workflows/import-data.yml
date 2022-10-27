@@ -19,6 +19,6 @@ jobs:
         
       - name: import data
         run: |
-          contentful space import --config contentful/import-config.json -mt ${{secrets.}} --content-file contentful/2022-10-26/export.json
+          contentful space import --config contentful/import-config.json -mt ${{secrets.CONTENTFUL_EXPORT_TOKEN}} --content-file contentful/2022-10-26/export.json
         
       
