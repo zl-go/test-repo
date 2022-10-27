@@ -1,0 +1,24 @@
+name: contentful cli import data
+
+on:
+  workflow_dispatch
+  
+jobs:
+  import:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@master
+ 
+      - name: setup node.js environment
+        uses: actions/setup-node@v3.5.1
+      
+      - name: install contentful cli
+        run: npm install -g contentful-cli
+        
+      - name: import data
+        run: |
+          contentful space import --config contentful/import-config.json -mt ${{secrets.}} --content-file contentful/2022-10-26/export.json
+        
+      
