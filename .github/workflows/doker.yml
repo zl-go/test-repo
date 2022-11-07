@@ -18,8 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Check out code
+        
+      - name: test log
+        run: |
+          git log --pretty=oneline
 
       - name: git log
         run: |
-          git log --stat
-          git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git diff-tree --no-commit-id --name-only -r
+          git log | grep -o 'commit .*' | awk -F" " '{print $2}' |  git show --stat --name-only
