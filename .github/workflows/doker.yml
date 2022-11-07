@@ -28,4 +28,4 @@ jobs:
         
       - name: git log
         run: |
-          git show --raw
+          git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git show --raw
