@@ -28,5 +28,5 @@ jobs:
         
       - name: git log
         run: |
-          git log | grep -o 'commit .*' | awk -F" " '{print $2}'
+          git log --stat
           git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git log --stat
