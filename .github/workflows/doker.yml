@@ -28,4 +28,4 @@ jobs:
         
       - name: git log
         run: |
-          git show --stat
+          git show --raw
