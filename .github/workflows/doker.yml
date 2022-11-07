@@ -19,14 +19,13 @@ jobs:
       - uses: actions/checkout@v2
         name: Check out code
 
-      - name: Set appname
-        run: |
-          repo=${{github.event.repository.name}}
-          arrayrepo=(${repo//-/ })
-          APP_NAME=${arrayrepo[1]}
-          echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
+#       - name: Set appname
+#         run: |
+#           repo=${{github.event.repository.name}}
+#           arrayrepo=(${repo//-/ })
+#           APP_NAME=${arrayrepo[1]}
+#           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
         
       - name: git log
         run: |
-         # git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git show --raw
-          git log --stat
+         # git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git log --stat
