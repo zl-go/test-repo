@@ -26,16 +26,7 @@ jobs:
             echo "Do something with this ${changed_file}."
           done 
           
-      - name: new file
+      - name: print github.sha
         run: |
-          mkdir test
-          cd test
-          touch test1.txt
-          
-      - id: files-2
-        uses: jitterbit/get-changed-files@v1
-      - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
-          
+          echo "${{ github.sha }}"
+          git log | grep -o 'commit .*' | awk -F" " '{print $2}' 
