@@ -28,7 +28,9 @@ jobs:
           
       - name: new file
         run: |
-          touch test/test.txt
+          mkdir test
+          cd test
+          touch test.txt
           
       - id: files-2
         uses: jitterbit/get-changed-files@v1
