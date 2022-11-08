@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir test
           cd test
-          touch test.txt
+          touch test1.txt
           
       - id: files-2
         uses: jitterbit/get-changed-files@v1
@@ -39,15 +39,3 @@ jobs:
             echo "Do something with this ${changed_file}."
           done
           
-      - id: push
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "push the contenful backup file"    
-          
-          
-      - id: files-3
-        uses: jitterbit/get-changed-files@v1
-      - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
