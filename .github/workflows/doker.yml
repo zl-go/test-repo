@@ -18,24 +18,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Check out code
-        
-      - name: test log
-        run: |
-          git log --pretty=oneline
-
-      - name: git log
-        run: |
-         git show --stat --name-only
          
       - uses: jitterbit/get-changed-files@v1
         with:
-          # Format of the steps output context.
-          # Can be 'space-delimited', 'csv', or 'json'.
-          # Default: 'space-delimited'
           format: 'json'    
           
-      - name: git log
+      - name: new file
         run: |
-          git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git diff-tree --no-commit-id --name-only -r
+          mkdir testFile
+          touch test.txt
           
-      
+      - uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'   
+          
+      - id: push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "push the contenful backup file"    
+          
+          
+      - uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'   
