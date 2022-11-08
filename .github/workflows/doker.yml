@@ -25,4 +25,8 @@ jobs:
 
       - name: git log
         run: |
-          git log | grep -o 'commit .*' | awk -F" " '{print $2}' |  git show --stat --name-only
+         git show --stat --name-only
+          
+      - name: git log
+        run: |
+          git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git diff-tree --no-commit-id --name-only -r
