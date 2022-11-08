@@ -26,7 +26,16 @@ jobs:
       - name: git log
         run: |
          git show --stat --name-only
+         
+      - uses: jitterbit/get-changed-files@v1
+        with:
+          # Format of the steps output context.
+          # Can be 'space-delimited', 'csv', or 'json'.
+          # Default: 'space-delimited'
+          format: ''    
           
       - name: git log
         run: |
           git log | grep -o 'commit .*' | awk -F" " '{print $2}' | git diff-tree --no-commit-id --name-only -r
+          
+      
