@@ -32,7 +32,7 @@ jobs:
           # Format of the steps output context.
           # Can be 'space-delimited', 'csv', or 'json'.
           # Default: 'space-delimited'
-          format: ''    
+          format: 'json'    
           
       - name: git log
         run: |
