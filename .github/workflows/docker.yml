@@ -1,14 +1,15 @@
 name: Docker Build And Push To Docker Hub
 
-on:
-  push:
-    branches: [ main ]
-    paths: 
-      - 'apps/*/Dockerfile'
-      - 'apps/*/cmd.sh'
-      - 'apps/*/entrypoint.sh'
-    tags:
-      - v**
+on: 
+  workflow_dispatch
+#   push:
+#     branches: [ main ]
+#     paths: 
+#       - 'apps/*/Dockerfile'
+#       - 'apps/*/cmd.sh'
+#       - 'apps/*/entrypoint.sh'
+#     tags:
+#       - v**
 jobs:
   build:
     name: Build Docker image
@@ -19,20 +20,31 @@ jobs:
       - uses: actions/checkout@v2
         name: Check out code
          
-      - id: files-1
-        uses: jitterbit/get-changed-files@v1
-      - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done 
-          
-      - name: print github.sha
+#       - id: files-1
+#         uses: jitterbit/get-changed-files@v1
+#       - run: |
+#           for changed_file in ${{ steps.files.outputs.all }}; do
+#             echo "Do something with this ${changed_file}."
+#           done 
+      - name: test
         run: |
-          echo "${{ github.sha }}"
-          git log | grep -o 'commit .*' | awk -F" " '{print $2}' 
-          echo "${{github.event.after}}"
-          echo "${{github.event.before}}"
-          curl \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{github.token}}" \
-            https://api.github.com/repos/zl-go/test-repo/compare/${{github.event.before}}...${{github.event.after}}
+          touch tes.txt
+          
+      - name: test
+        run: |
+          exit 1
+          
+      - name: test
+        run: |
+          touch tes-1.txt  
+          
+#       - name: print github.sha
+#         run: |
+#           echo "${{ github.sha }}"
+#           git log | grep -o 'commit .*' | awk -F" " '{print $2}' 
+#           echo "${{github.event.after}}"
+#           echo "${{github.event.before}}"
+#           curl \
+#             -H "Accept: application/vnd.github+json" \
+#             -H "Authorization: Bearer ${{github.token}}" \
+#             https://api.github.com/repos/zl-go/test-repo/compare/${{github.event.before}}...${{github.event.after}}
