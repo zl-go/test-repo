@@ -26,9 +26,17 @@ jobs:
           echo "all files:"
           for changed_file in ${{ env.outputs.all }}; do
             echo "Do something with this ${changed_file}."
-          done       
+          done 
+          echo "all files without output:"
+          for changed_file in ${{ env.all }}; do
+            echo "Do something with this ${changed_file}."
+          done  
           echo "modified files:"
           for changed_file in ${{ env.outputs.modified }}; do
+            echo "Do something with this ${changed_file}."
+          done 
+          echo "modified files without output:"
+          for changed_file in ${{ env.modified }}; do
             echo "Do something with this ${changed_file}."
           done    
           echo "method before:"
