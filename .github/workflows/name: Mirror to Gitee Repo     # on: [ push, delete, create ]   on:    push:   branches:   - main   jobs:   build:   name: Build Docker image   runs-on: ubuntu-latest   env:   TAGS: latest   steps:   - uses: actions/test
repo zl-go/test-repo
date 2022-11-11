@@ -1,0 +1,49 @@
+name: Mirror to Gitee Repo
+
+# on: [ push, delete, create ]
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    env:
+      TAGS: latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+        
+      - name: set appname 
+        run: | 
+         pass="true"
+         appname="app"
+         echo "APP_NAME=${appname}" >> $GITHUB_ENV
+         echo "PASS_STEP=${pass}" >> $GITHUB_ENV
+         echo "${{env.PASS_STEP}}"
+         
+      - name: set tags 
+        if: env.PASS_STEP=='false'
+        run: |  
+         echo "${{env.PASS_STEP}}"
+         echo "you should not see it"
+         
+      - name: set tags 
+        if: env.PASS_STEP=='true'
+        run: |  
+         echo "${{env.PASS_STEP}}"
+         echo "you should not see it"
+
+      - name: set tags 
+        if: ${{env.PASS_STEP}}=='false'
+        run: |  
+         echo "${{env.PASS_STEP}}"
+         echo "you should not see it"
+         
+      - name: set tags 
+        if: ${{env.PASS_STEP}}=='true'
+        run: |  
+         echo "${{env.PASS_STEP}}"
+         echo "you should not see it"
+         
