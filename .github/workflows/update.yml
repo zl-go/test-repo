@@ -1,0 +1,20 @@
+name: update dockerfile-compose
+
+on: 
+   workflow_dispatch
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@master
+ 
+      - id: setup
+        uses: actions/setup-node@v3.5.1
+      
+      - id: install
+        run: |
+          chmod +x ./test.sh
+          ./test.sh
+           
