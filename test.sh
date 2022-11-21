@@ -2,10 +2,9 @@
 files=$(ls apps/)
 for file in $files
 do
-  FILE = apps/$file/docker-compose.yml
-  if [ -f "$FILE" ];then
-    sed -i 's/restart: always/restart: unless-stopped/g' $FILE
+  if [ -f apps/$file/docker-compose.yml ];then
+    sed -i 's/restart: always/restart: unless-stopped/g' apps/$file/docker-compose.yml
   else 
-    echo "$FILE dosen't exist"
+    echo "apps/$file/docker-compose.yml dosen't exist"
   fi
 done
