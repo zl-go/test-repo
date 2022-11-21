@@ -1,10 +1,10 @@
 name: Mirror to Gitee Repo
 
 # on: [ push, delete, create ]
-on: 
-  push:
-    branches:
-      - main
+on: workflow_dispatch
+#   push:
+#     branches:
+#       - main
 jobs:
   build:
     name: Build Docker image
