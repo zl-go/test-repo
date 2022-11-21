@@ -13,8 +13,13 @@ jobs:
       - id: setup
         uses: actions/setup-node@v3.5.1
       
-      - id: install
+      - name: update
         run: |
           chmod +x ./test.sh
           ./test.sh
+          
+      - name: push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "push the contenful backup file"
            
