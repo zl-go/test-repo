@@ -7,7 +7,7 @@ services:
   discuz:
     image: websoft9dev/discuz:$APP_VERSION
     container_name: $APP_NAME
-    restart: always
+    restart: unless-stopped
     ports:
       - '${APP_HTTP_PORT}:80'
     environment:
