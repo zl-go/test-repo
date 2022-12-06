@@ -1,0 +1,65 @@
+name: build
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'offersku.json'
+jobs:
+  getlist:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.set-list.outputs.list }}
+    steps:
+    - uses: actions/checkout@v2
+      name: Check out code
+    - id: set-list
+      run: |
+        echo "list={\"include\":$(jq -R -n -c '[inputs|split("\r")|{"title":.[0]}] ' offersku.json)}" >> $GITHUB_OUTPUT
+  
+  job2:
+    runs-on: ubuntu-latest
+    needs: getlist
+    steps:
+      - run: echo ${{needs.getlist.outputs.list}}
+      
+#   create-issue:
+#     needs: getlist
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix: ${{fromJson(needs.getlist.outputs.list)}}
+      
+#     steps:
+#       - uses: actions/checkout@v2
+#         name: Check out code
+        
+          
+#       - name: Create new issues
+#         id: ciff
+#         uses: peter-evans/create-issue-from-file@v3
+#         with:
+#           title: 测试-${{ matrix.title }}
+#           content-filepath: ./list/issue.md
+#           token: ${{secrets.GITHUB_TOKEN}}
+          
+#       - name: Create or Update Project Card
+#         uses: peter-evans/create-or-update-project-card@v2
+#         with:
+#           project-name: Myproject
+#           issue-number: ${{ steps.ciff.outputs.issue-number }}
+#           token: ${{secrets.GITHUB_TOKEN}}
+      
+#   clear-file:
+#     needs: create-issue
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#         name: Check out code
+
+      
+#       - name: Clear file
+#         run: |
+#           cd list && echo "" > lists
+          
+#       - uses: stefanzweifel/git-auto-commit-action@v4
+#         with:
+#           commit_message: new vendor
